@@ -8,6 +8,7 @@ This is my solution to Homework 1.
 
 ```{r}
 library(tidyverse)
+library(palmerpenguins)
 ```
 
 
@@ -33,7 +34,10 @@ mean(pull(prob1_df, samp_gt_0))
 mean(pull(prob1_df, char_vec))
 mean(pull(prob1_df, factor_vec))
 ```
+The mean of character and factor vectors cannot be taken. The logical vector is converted to numeric using implicit type conversion where TRUE is taken as 1 and FALSE, 0.
 
+
+Convert each variable in prob1_df to numeric 
 
 ```{r convert_numeric}
 as.numeric(pull(prob1_df, samp))
@@ -41,15 +45,59 @@ as.numeric(pull(prob1_df, samp_gt_0))
 as.numeric(pull(prob1_df, char_vec))
 as.numeric(pull(prob1_df, factor_vec))
 ```
+
+Note: Logical vector is converted to numeric where TRUE is taken as numeric 1 and FALSE, numeric 0. Character vector cannot be converted to numeric and NAs are introduced by coercion. Factor vector is converted to numeric where low is treated as 2, mod as 3 and high as 1. Numbers from 1 to 3 are assigned in order of increasing frequency of a factor level.
  
- 
-```{r}
+Converting and multiplying logical vector 
+
+```{r logical}
 as.numeric(pull(prob1_df, samp_gt_0)) * pull(prob1_df, samp)
 as.factor(pull(prob1_df, samp_gt_0)) * pull(prob1_df, samp)
 as.numeric(as.factor(pull(prob1_df, samp_gt_0))) * pull(prob1_df, samp)
 ```
 
+Note: Converting to numeric and multiplication with random sample (samp) produces a numeric vector result. However, converting to factor and performing the same multiplication leads to an error message and introduction of NAs. Converting to factor and then to numeric leads to the end result being a numeric vector that can be multiplied by samp.
 
 
 ##Problem 2
+
+Loading penguins dataset
+
+```{r}
+data("penguins", package = "palmerpenguins")
+```
+
+Summary of penguins dataset
+
+```{r summary}
+head(penguins)
+summary(penguins)
+nrow(penguins)
+ncol(penguins)
+mean(pull(penguins, flipper_length_mm))
+mean(na.omit(pull(penguins, flipper_length_mm)))
+```
+
+###Short description of penguins dataset:
+1. Data in the dataset
+There are 8 columns in this dataset namely: species, island, bill_length in mm, bill_depth in mm, flipper length in mm, body_mass in grams, sex and year 
+
+2. The size of the dataset is 344 rows * 8 columns
+
+3. Values of important variables
+- Species and Island: There are 3 different types of species of penguins in the dataset that live on 3 different islands. 
+- Sex: Overall, there are 165 female penguins and 168 male penguins with 11 rows where the sex is unknown.
+- Body measurements: bill_length_mm, bill depth_mm, flipper_length_mm and body_mass_g contain 2 missing (NA) values.
+
+4. Mean of flipper length:
+The mean of the flipper length results in a NA outcome due to the presence of 2 NA values in the column as seen in the summary function. However, on excluding the 2 rows with the NA values, the mean length is 200.9 mm.
+
+
+Scatter plot of flipper length vs bill length
+
+```{r scatter}
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggsave("scatter_plot_problem2.pdf", height = 4, width = 6)
+```
+
 
