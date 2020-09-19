@@ -78,7 +78,7 @@ mean(pull(penguins, flipper_length_mm))
 mean(na.omit(pull(penguins, flipper_length_mm)))
 ```
 
-###Short description of penguins dataset:
+Short description of penguins dataset:
 1. Data in the dataset
 There are 8 columns in this dataset namely: species, island, bill_length in mm, bill_depth in mm, flipper length in mm, body_mass in grams, sex and year 
 
